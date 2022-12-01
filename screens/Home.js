@@ -6,26 +6,50 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
-import {TextInput} from 'react-native-gesture-handler';
-import {RightArrow} from '../assets/rightArrow.svg';
+import React, {useState} from 'react';
+import {FlatList, TextInput} from 'react-native-gesture-handler';
 import TodoItem from '../components/TodoItem';
 import Constants from '../components/Constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
+
 const Home = () => {
+  const [todoValue, setTodoValue] = useState('');
+  const dispatch = useDispatch();
+  const data = useSelector(state => state);
+  const todos = data.todos.todos;
+
+  const addItem = () => {
+    if (todos && !todos.includes(todoValue)) {
+      dispatch(AddTodo(todoValue));
+      setTodoValue('');
+    } else {
+      alert(`${todoValue} already added in Todo list`);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.inputArea}>
-          <TextInput placeholder="Add Todo" style={styles.inputText} />
-          <TouchableOpacity style={styles.inputButton}>
+          <TextInput
+            placeholder="Add Todo"
+            style={styles.inputText}
+            value={todoValue}
+            onChangeText={data => setTodoValue(data)}
+          />
+          <TouchableOpacity style={styles.addItemButton} onPress={addItem}>
             <Image
               style={styles.icon}
               source={require('../assets/plus_white.png')}
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.todoItemContainer}>
-          <TodoItem />
+        <View>
+          <FlatList
+            data={todos}
+            renderItem={({item}) => <TodoItem items={item} />}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -37,7 +61,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f6fafb',
     padding: 10,
     alignItems: 'center',
   },
@@ -46,7 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '80%',
     marginTop: 20,
-    // backgroundColor: '#9E9E9E',
   },
 
   inputArea: {
@@ -57,20 +80,20 @@ const styles = StyleSheet.create({
   },
 
   inputText: {
-    backgroundColor: Constants.PRIMARY_COLOR,
-    color: '#fff',
-    fontWeight: '900',
+    backgroundColor: '#fff',
+    color: '#111',
+    fontWeight: '500',
     padding: 10,
     borderRadius: 8,
     marginVertical: 5,
     width: '85%',
     shadowRadius: 3,
-    shadowColor: '#FF7043',
+    shadowColor: '#BDBDBD',
     shadowOffset: {width: -1, height: 1},
     shadowOpacity: 0.2,
   },
 
-  inputButton: {
+  addItemButton: {
     display: 'flex',
     width: 40,
     height: 40,

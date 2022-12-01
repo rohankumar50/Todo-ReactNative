@@ -1,3 +1,12 @@
 export default {
   PRIMARY_COLOR: '#FF5722',
+  SHADOW: {
+    shadowRadius: 3,
+    shadowColor: '#BDBDBD',
+    shadowOffset: {width: -1, height: 1},
+    shadowOpacity: 0.2,
+  },
+  TEST_COLOR: {
+    backgroundColor: '#9E9E9E',
+  },
 };

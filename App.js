@@ -1,28 +1,20 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import Login from './screens/Login';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import Home from './screens/Home';
+import Navigations from './components/Navigations';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import RootReducer from './redux/reducers/RootReducer';
 
-const Stack = createStackNavigator();
+const store = createStore(
+  RootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="home"
-          component={Home}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="login"
-          component={Login}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <Navigations />
+    </Provider>
   );
 };
 
