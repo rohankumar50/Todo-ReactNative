@@ -30,8 +30,16 @@ const Navigations = () => {
           component={Login}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="allTasks" component={AllTasks} />
-        <Stack.Screen name="currentTasks" component={CurrentTasks} />
+        <Stack.Screen
+          name="allTasks"
+          component={AllTasks}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="currentTasks"
+          component={CurrentTasks}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="completedTasks" component={CompletedTasks} />
         <Stack.Screen name="overdueTasks" component={OverdueTasks} />
       </Stack.Navigator>

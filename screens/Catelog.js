@@ -9,8 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Constants from '../components/Constants';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import UpcomingItem from '../components/UpcomingItem';
 
 const Catelog = ({navigation}) => {
   const [todayDay, setTodayDay] = useState('');
@@ -102,26 +100,6 @@ const Catelog = ({navigation}) => {
 export default Catelog;
 
 const styles = StyleSheet.create({
-  upcoming: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    marginTop: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    shadowRadius: 3,
-    shadowColor: '#BDBDBD',
-    shadowOffset: {width: -1, height: 1},
-    shadowOpacity: 0.2,
-  },
-  upcomingStyle: {},
-  upcomingText: {
-    color: '#757575',
-    fontWeight: '300',
-    fontSize: 16,
-  },
   container: {
     flex: 1,
     backgroundColor: Constants.PAGE_LAYOUT.backgroundColor,
@@ -205,5 +183,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
     opacity: 0.6,
+  },
+
+  upcoming: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    marginTop: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    shadowRadius: 3,
+    shadowColor: '#BDBDBD',
+    shadowOffset: {width: -1, height: 1},
+    shadowOpacity: 0.2,
+  },
+  upcomingText: {
+    color: '#757575',
+    fontWeight: '300',
+    fontSize: 16,
   },
 });
