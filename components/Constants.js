@@ -9,4 +9,8 @@ export default {
   TEST_COLOR: {
     backgroundColor: '#9E9E9E',
   },
+  PAGE_LAYOUT: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 30,
+  },
 };
