@@ -1,27 +1,36 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
 import Constants from './Constants';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { date } from './CurrentTimeDate';
 
-const TodoItem = ({items}) => {
+const TodoItem = ({ items, color }) => {
   const [checked, setChecked] = useState(false);
   const deleteTodo = () => {
     console.log('sdfd');
   };
+
+  const createdDate = date
+
   return (
     <View style={styles.container}>
-      <BouncyCheckbox
-        text={items}
-        fillColor="#FF5722"
-        size={20}
-        isChecked={checked}
-        onPress={() => {
-          setChecked(!checked);
-        }}
-        textStyle={styles.todo}
-        style={styles.todoContainer}
-      />
+      <View style={styles.checkBoxContainer}>
+        <BouncyCheckbox
+          // text={date}
+          fillColor={color}
+          size={20}
+          isChecked={checked}
+          onPress={() => {
+            setChecked(!checked);
+          }}
+          textStyle={styles.todo}
+        />
+        <View>
+          <Text style={{ color: Constants.TEXT_COLOR.color, fontSize: 20 }}>my text</Text>
+          <Text style={{ color: '#9E9E9E', fontSize: 10 }}>{createdDate}</Text>
+        </View>
+      </View>
       <TouchableOpacity onPress={deleteTodo}>
         <Image
           style={styles.deleteIcon}
@@ -47,8 +56,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     shadowRadius: 3,
     shadowColor: '#BDBDBD',
-    shadowOffset: {width: -1, height: 1},
+    shadowOffset: { width: -1, height: 1 },
     shadowOpacity: 0.2,
+  },
+
+  checkBoxContainer: {
+    flexDirection: 'row'
   },
   todo: {
     color: '#757575',

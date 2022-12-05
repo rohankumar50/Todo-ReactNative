@@ -1,8 +1,9 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Navigations from './components/Navigations';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import RootReducer from './redux/reducers/RootReducer';
 
 const store = createStore(
@@ -13,7 +14,9 @@ const store = createStore(
 const App = () => {
   return (
     <Provider store={store}>
-      <Navigations />
+      <PaperProvider>
+        <Navigations />
+      </PaperProvider>
     </Provider>
   );
 };

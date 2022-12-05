@@ -1,16 +1,19 @@
 import {
+  FlatList,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from '../components/Constants';
+import TodoItem from '../components/TodoItem';
 
-const Catelog = ({navigation}) => {
+const Catelog = ({ navigation }) => {
   const [todayDay, setTodayDay] = useState('');
 
   useEffect(() => {
@@ -27,69 +30,84 @@ const Catelog = ({navigation}) => {
     const d = new Date();
     setTodayDay(weekday[d.getDay()]);
   }, []);
+  const ms = ["data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1"]
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <View style={styles.welcomeTextContainer}>
           <Text style={styles.welcomeText}>Hi there !</Text>
-          <Text style={{...styles.welcomeText, fontSize: 32}}>
+          <Text style={{ ...styles.welcomeText, fontSize: 32 }}>
             It's {todayDay}
           </Text>
         </View>
 
-        <TextInput placeholder="Search Your Task" style={styles.searchBar} />
+        <TextInput placeholder="Search Your Todos" placeholderTextColor='#BDBDBD' style={styles.searchBar} />
         <View style={styles.content}>
           <View>
-            <Text style={styles.heading}>My Tasks</Text>
+            <Text style={styles.heading}>My Todos</Text>
             <Text style={styles.shortText}>Organize Your task</Text>
             <View style={styles.cardContainer}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('allTasks')}
-                style={{...styles.card, backgroundColor: '#BA68C8'}}>
+                style={{ ...styles.card, backgroundColor: '#BA68C8' }}>
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/all_task.png')}></Image>
-                <Text style={styles.cardText}>All Task</Text>
+                <Text style={styles.cardText}>All Todos</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('currentTasks')}
-                style={{...styles.card, backgroundColor: '#29B6F6'}}>
+                style={{ ...styles.card, backgroundColor: '#29B6F6' }}>
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/current_task.png')}></Image>
-                <Text style={styles.cardText}>Current Task </Text>
+                <Text style={styles.cardText}>Current Todos </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('completedTasks')}
-                style={{...styles.card, backgroundColor: '#81C784'}}>
+                style={{ ...styles.card, backgroundColor: '#81C784' }}>
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/completed_task.png')}></Image>
-                <Text style={styles.cardText}>Completed Task</Text>
+                <Text style={styles.cardText}>Completed Todos</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('overdueTasks')}
-                style={{...styles.card, backgroundColor: '#EC407A'}}>
+                style={{ ...styles.card, backgroundColor: '#EC407A' }}>
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/overdue_task.png')}></Image>
-                <Text style={styles.cardText}>Overdue Task</Text>
+                <Text style={styles.cardText}>Overdue Todos</Text>
               </TouchableOpacity>
             </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('overdueTasks')}
+              style={styles.createButton}>
+              <Image
+                style={styles.cardImage}
+                source={require('../assets/plus_white.png')}></Image>
+              <Text style={styles.cardText}>Create Your Todo</Text>
+            </TouchableOpacity>
           </View>
           <View>
-            <Text style={styles.shortText}>Upcoming Tasks</Text>
+            <Text style={styles.shortText}>Upcoming Todos</Text>
             {/* <UpcomingItem/> */}
-            <View style={styles.upcomingEvent}>
-              <Image
-                source={require('../assets/upcoming.png')}
-                style={styles.upcomingEventImage}
+            {/* <View style={styles.upcomingEvent}>
+                <Image
+                  source={require('../assets/upcoming.png')}
+                  style={styles.upcomingEventImage}
+                />
+                <Text style={{ marginTop: 20, color: '#757575' }}>
+                  There is no upcoming Todos
+                </Text>
+              </View> */}
+            <View style={{ backgroundColor: 'red',flex:1 }}>
+              <FlatList
+                data={ms}
+                renderItem={({ item }) => <TodoItem items={item} color={"#BA68C8"} />}
               />
-              <Text style={{marginTop: 20, color: '#757575'}}>
-                There is no upcoming Task
-              </Text>
-            </View>
+            </View>`
           </View>
         </View>
       </SafeAreaView>
@@ -110,9 +128,10 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     marginVertical: 5,
+    color: Constants.TEXT_COLOR.color
   },
   searchBar: {
-    backgroundColor: '#fff',
+    backgroundColor: '#EEEEEE',
     color: '#111',
     fontWeight: '500',
     padding: 10,
@@ -120,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     shadowRadius: 3,
     shadowColor: '#BDBDBD',
-    shadowOffset: {width: -1, height: 1},
+    shadowOffset: { width: -1, height: 1 },
     shadowOpacity: 0.2,
   },
 
@@ -130,6 +149,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
+    color: Constants.TEXT_COLOR.color
   },
   shortText: {
     fontSize: 12,
@@ -156,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 5,
@@ -171,6 +191,21 @@ const styles = StyleSheet.create({
   cardImage: {
     width: 20,
     height: 20,
+  },
+
+  createButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: '#FF5722',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5,
   },
 
   upcomingEventImage: {
@@ -196,7 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     shadowRadius: 3,
     shadowColor: '#BDBDBD',
-    shadowOffset: {width: -1, height: 1},
+    shadowOffset: { width: -1, height: 1 },
     shadowOpacity: 0.2,
   },
   upcomingText: {
@@ -205,3 +240,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
