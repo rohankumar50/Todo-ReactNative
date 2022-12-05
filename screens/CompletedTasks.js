@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
   },
 
   progressText: {
-    marginVertical: 5
+    marginVertical: 5,
+    color: '#EEEEEE',
   },
 
   content: {

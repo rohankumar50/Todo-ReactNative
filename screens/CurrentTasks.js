@@ -1,14 +1,35 @@
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Constants from '../components/Constants';
 import ProgressBar from '../components/ProgressBar';
 import CurrentDate from '../components/CurrentDate';
-import { useDispatch, useSelector } from 'react-redux';
-import { AddTodo, RemoveTodo } from '../redux/actions/todoActions/TodoActions';
+import {useDispatch, useSelector} from 'react-redux';
+import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
 import TodoItem from '../components/TodoItem';
 
 const CurrentTasks = () => {
-  const ms = ["data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1", "data1"]
+  const ms = [
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+    'data1',
+  ];
   const [todoValue, setTodoValue] = useState('');
   const dispatch = useDispatch();
   const data = useSelector(state => state);
@@ -31,11 +52,11 @@ const CurrentTasks = () => {
       </View>
       <View style={styles.content}>
         <Text>todays task</Text>
-        <Text style={{ color: '#111' }}>todays task</Text>
+        <Text style={{color: '#111'}}>todays task</Text>
         <View>
           <FlatList
             data={ms}
-            renderItem={({ item }) => <TodoItem items={item} color={"#29B6F6"} />}
+            renderItem={({item}) => <TodoItem items={item} color={'#29B6F6'} />}
           />
         </View>
       </View>
@@ -58,7 +79,7 @@ const styles = StyleSheet.create({
   },
 
   headerContent: {
-    width: '70%'
+    width: '70%',
   },
 
   headerContentImage: {
@@ -69,9 +90,8 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#fff',
     fontSize: 30,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
-
 
   icon: {
     height: 120,
@@ -79,11 +99,12 @@ const styles = StyleSheet.create({
   },
 
   progress: {
-    marginTop: 28
+    marginTop: 28,
   },
 
   progressText: {
-    marginVertical: 5
+    marginVertical: 5,
+    color: '#EEEEEE',
   },
 
   content: {
@@ -91,6 +112,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: Constants.PAGE_LAYOUT.paddingHorizontal
+    padding: Constants.PAGE_LAYOUT.paddingHorizontal,
   },
 });

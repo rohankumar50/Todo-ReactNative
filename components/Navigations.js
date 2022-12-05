@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../screens/Home';
 import Login from '../screens/Login';
 import Catelog from '../screens/Catelog';
@@ -19,46 +19,46 @@ const Navigations = () => {
         <Stack.Screen
           name="catelog"
           component={Catelog}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="createTodo"
+          component={CreateTodos}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="allTasks"
           component={AllTasks}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="createTodo"
-          component={CreateTodos}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
 
         <Stack.Screen
           name="currentTasks"
           component={CurrentTasks}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
 
         <Stack.Screen
           name="home"
           component={Home}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="login"
           component={Login}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="completedTasks"
           component={CompletedTasks}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="overdueTasks"
           component={OverdueTasks}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
