@@ -57,14 +57,14 @@ const AllTasks = () => {
         </View>
       </View>
       <View style={styles.content}>
-        <Text style={{color: '#111'}}>todays todos</Text>
+        {/* <Text style={{color: '#111'}}>todays todos</Text> */}
         <View>
           <FlatList
             data={todos}
             renderItem={({item}) => (
               <View>
                 <TodoItem
-                  items={item.title}
+                  items={item}
                   date={item.todaysDate}
                   color={'#BA68C8'}
                 />
