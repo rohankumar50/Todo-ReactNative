@@ -1,20 +1,24 @@
-import { ADD_TODO, REMOVE_TODO } from '../actions/todoActions/ActionTypes';
+import {
+  ADD_TODO,
+  READ_DATA,
+  REMOVE_TODO,
+} from '../actions/todoActions/ActionTypes';
 
-const INITIAL_STATE = { todos: [] };
+const INITIAL_STATE = {todos: []};
 
 const todoReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_TODO:
-      return { todos: [...state.todos, action.payload] };
-      break;
+      return {todos: [...state.todos, action.payload]};
 
     case REMOVE_TODO:
-      return { todos: handleRemoveTodo(action.payload, state.todos) };
-      break;
+      return {todos: handleRemoveTodo(action.payload, state.todos)};
+
+    case READ_DATA:
+      return {...state, todos: action.payload};
 
     default:
       return state;
-      break;
   }
 };
 

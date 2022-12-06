@@ -52,12 +52,17 @@ const OverdueTasks = () => {
       </View>
       <View style={styles.content}>
         <Text>todays task</Text>
-        <Text style={{color: '#111'}}>todays task</Text>
-        <View>
+        {/* <View>
           <FlatList
             data={ms}
             renderItem={({item}) => <TodoItem items={item} color={'#EC407A'} />}
           />
+        </View> */}
+        <View style={styles.upcomingEvent}>
+          <Image
+            style={styles.upcomingEventImage}
+            source={require('../assets/upcoming.png')}></Image>
+          <Text style={{color: '#111', marginTop: 10}}>No upcoming events</Text>
         </View>
       </View>
     </View>
@@ -113,5 +118,19 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: Constants.PAGE_LAYOUT.paddingHorizontal,
+  },
+
+  upcomingEventImage: {
+    width: 100,
+    height: 100,
+    opacity: 0.5,
+  },
+
+  upcomingEvent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.6,
+    height: '100%',
   },
 });

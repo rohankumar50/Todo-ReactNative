@@ -10,29 +10,34 @@ import React, {useEffect, useState} from 'react';
 import Constants from '../components/Constants';
 import ProgressBar from '../components/ProgressBar';
 import CurrentDate from '../components/CurrentDate';
-import {useDispatch, useSelector} from 'react-redux';
-import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
+import database from '@react-native-firebase/database';
 import TodoItem from '../components/TodoItem';
+import {Divider} from 'react-native-paper';
+import NullData from '../components/NullData';
 
 const CurrentTasks = () => {
-  const ms = [
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-    'data1',
-  ];
-  const [todoValue, setTodoValue] = useState('');
-  const dispatch = useDispatch();
-  const data = useSelector(state => state);
+  const [todos, setTodos] = useState([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const todos = database().ref('/Todos');
+
+    const onLoading = todos.on('value', snapshot => {
+      setTodos([]);
+      setCount(snapshot.numChildren());
+      snapshot.forEach(function (childSnapshot) {
+        const value = childSnapshot.val();
+        const key = {keys: childSnapshot.key};
+        const data = {...key, value};
+        setTodos(todos => [...todos, data]);
+      });
+    });
+
+    return () => {
+      todos.off('value', onLoading);
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -51,13 +56,31 @@ const CurrentTasks = () => {
         </View>
       </View>
       <View style={styles.content}>
-        <Text>todays task</Text>
-        <Text style={{color: '#111'}}>todays task</Text>
         <View>
-          <FlatList
-            data={ms}
-            renderItem={({item}) => <TodoItem items={item} color={'#29B6F6'} />}
-          />
+          {todos.filter(todo => {
+            return !todo.value.completed;
+          }).length === 0 ? (
+            <NullData />
+          ) : (
+            <FlatList
+              data={todos}
+              renderItem={({item}) =>
+                item.value.completed === false ? (
+                  <View>
+                    <TodoItem
+                      items={item}
+                      title={item.value.title}
+                      key={item.key}
+                      date={item.value.createdDate}
+                      time={item.value.createdTime}
+                      color={'#29B6F6'}
+                    />
+                    <Divider style={{backgroundColor: '#E0E0E0'}} />
+                  </View>
+                ) : null
+              }
+            />
+          )}
         </View>
       </View>
     </View>
@@ -114,4 +137,5 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: Constants.PAGE_LAYOUT.paddingHorizontal,
   },
+ 
 });

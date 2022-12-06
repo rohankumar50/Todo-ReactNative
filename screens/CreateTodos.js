@@ -12,36 +12,42 @@ import {
 import database from '@react-native-firebase/database';
 import React, {useEffect, useState} from 'react';
 import Constants from '../components/Constants';
-import ProgressBar from '../components/ProgressBar';
-import CurrentDate from '../components/CurrentDate';
-import {useDispatch, useSelector} from 'react-redux';
-import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
-import TodoItem from '../components/TodoItem';
 import {todaysDay, date} from '../components/CurrentTimeDate';
 import {TextInput} from 'react-native-gesture-handler';
-import {ref, set} from 'firebase/database';
+
 const CreateTodos = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  //   const [todoData, setTodoData] = useState([]);
-  const todaysDate = todaysDay + ', ' + date;
+  const createdDate = todaysDay + ', ' + date;
+
   const createMyTodo = () => {
-    database()
-      .ref('Todos/')
-      .push({
-        title,
-        description,
-        todaysDate,
-      })
-      .then(data => {
-        setTitle('');
-        setDescription('');
-        navigation.navigate('catelog');
-      })
-      .catch(error => {
-        //error callback
-        console.log('error ', error);
-      });
+    const [date, setDate] = useState(new Date());
+    const [open, setOpen] = useState(false);
+
+    const d = new Date();
+    const createdTime = d.toLocaleTimeString();
+
+    if (title.trim().length !== 0) {
+      database()
+        .ref('Todos/')
+        .push({
+          title,
+          description,
+          createdDate,
+          createdTime,
+          completed: false,
+        })
+        .then(data => {
+          setTitle('');
+          setDescription('');
+          navigation.navigate('catelog');
+        })
+        .catch(error => {
+          console.log('error ', error);
+        });
+    } else {
+      alert('Kindly provide title of todo');
+    }
   };
 
   return (

@@ -1,7 +1,7 @@
 export default {
   PRIMARY_COLOR: '#FF5722',
   TEXT_COLOR: {
-    color: '#757575'
+    color: '#424242'
   },
   SHADOW: {
     shadowRadius: 3,

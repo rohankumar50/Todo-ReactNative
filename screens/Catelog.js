@@ -13,25 +13,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Constants from '../components/Constants';
 import TodoItem from '../components/TodoItem';
 import {Divider} from 'react-native-paper';
+import { todaysDay,date } from '../components/CurrentTimeDate';
 
 const Catelog = ({navigation}) => {
-  const [todayDay, setTodayDay] = useState('');
-
-  useEffect(() => {
-    const weekday = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
-
-    const d = new Date();
-    setTodayDay(weekday[d.getDay()]);
-  }, []);
-  const ms = ['data1'];
 
   return (
     <View style={styles.container}>
@@ -39,8 +23,10 @@ const Catelog = ({navigation}) => {
         <View style={styles.welcomeTextContainer}>
           <Text style={styles.welcomeText}>Hi there !</Text>
           <Text style={{...styles.welcomeText, fontSize: 32}}>
-            It's {todayDay}
+            It's {todaysDay}
           </Text>
+          <Text style={styles.date}>{date}</Text>
+
         </View>
 
         <TextInput
@@ -50,7 +36,7 @@ const Catelog = ({navigation}) => {
         />
         <View style={styles.content}>
           <View>
-            <Text style={styles.heading}>My Todos</Text>
+            <Text style={styles.heading}>My Todo's</Text>
             <Text style={styles.shortText}>Organize Your task</Text>
             <View style={styles.cardContainer}>
               <TouchableOpacity
@@ -59,7 +45,7 @@ const Catelog = ({navigation}) => {
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/all_task.png')}></Image>
-                <Text style={styles.cardText}>All Todos</Text>
+                <Text style={styles.cardText}>All Todo's</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('currentTasks')}
@@ -67,7 +53,7 @@ const Catelog = ({navigation}) => {
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/current_task.png')}></Image>
-                <Text style={styles.cardText}>Current Todos </Text>
+                <Text style={styles.cardText}>Current Todo's </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('completedTasks')}
@@ -75,7 +61,7 @@ const Catelog = ({navigation}) => {
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/completed_task.png')}></Image>
-                <Text style={styles.cardText}>Completed Todos</Text>
+                <Text style={styles.cardText}>Completed Todo's</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('overdueTasks')}
@@ -83,7 +69,7 @@ const Catelog = ({navigation}) => {
                 <Image
                   style={styles.cardImage}
                   source={require('../assets/overdue_task.png')}></Image>
-                <Text style={styles.cardText}>Overdue Todos</Text>
+                <Text style={styles.cardText}>Overdue Todo's</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
@@ -96,8 +82,17 @@ const Catelog = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View>
-            <Text style={styles.shortText}>Upcoming Todos</Text>
-            <View>
+            <Text style={styles.shortText}>Upcoming Todo's</Text>
+
+            <View style={styles.upcomingEvent}>
+              <Image
+                style={styles.upcomingEventImage}
+                source={require('../assets/upcoming.png')}></Image>
+              <Text style={{color: '#111', marginTop: 10}}>
+                No upcoming events
+              </Text>
+            </View>
+            {/* <View>
               <FlatList
                 data={ms}
                 renderItem={({item}) => (
@@ -107,7 +102,7 @@ const Catelog = ({navigation}) => {
                   </View>
                 )}
               />
-            </View>
+            </View> */}
           </View>
         </View>
       </SafeAreaView>
@@ -127,8 +122,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   welcomeText: {
+    fontSize:16,
     marginVertical: 5,
     color: Constants.TEXT_COLOR.color,
+    fontWeight: '700',
+  },
+
+  date:{
+    color:Constants.TEXT_COLOR.color
   },
   searchBar: {
     backgroundColor: '#EEEEEE',
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginVertical: 5,
     marginTop: 12,
-    color: '#757575',
+    color: Constants.TEXT_COLOR.color,
   },
 
   cardContainer: {
@@ -210,14 +211,15 @@ const styles = StyleSheet.create({
   },
 
   upcomingEventImage: {
-    width: 150,
-    height: 150,
+    width: 70,
+    height: 70,
+    opacity: 0.5,
   },
 
   upcomingEvent: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 10,
     opacity: 0.6,
   },
 

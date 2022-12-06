@@ -16,24 +16,29 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
 import TodoItem from '../components/TodoItem';
 import {Divider} from 'react-native-paper';
-import {todaysDay, date} from '../components/CurrentTimeDate';
+import {todaysDay, date, currentTime} from '../components/CurrentTimeDate';
 
 const AllTasks = () => {
-  const [todos, setTodos] = useState([]);
-
   // const [todoValue, setTodoValue] = useState('');
   // const dispatch = useDispatch();
   // const data = useSelector(state => state);
   // const todos = data.todos.todos;
+  const [todos, setTodos] = useState([]);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const todos = database().ref('/Todos');
     const onLoading = todos.on('value', snapshot => {
       setTodos([]);
+      setCount(snapshot.numChildren());
       snapshot.forEach(function (childSnapshot) {
-        setTodos(todos => [...todos, childSnapshot.val()]);
+        const value = childSnapshot.val();
+        const key = {keys: childSnapshot.key};
+        const data = {...key, value};
+        setTodos(todos => [...todos, data]);
       });
     });
+
     return () => {
       todos.off('value', onLoading);
     };
@@ -44,11 +49,11 @@ const AllTasks = () => {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View>
-            <Text style={styles.headerText}>All Todos</Text>
+            <Text style={styles.headerText}>All Todo's</Text>
             <Text>{todaysDay + ', ' + date}</Text>
           </View>
           <View style={styles.progress}>
-            <Text style={styles.progressText}>10 Todos</Text>
+            <Text style={styles.progressText}>{count} Todo's</Text>
             <ProgressBar />
           </View>
         </View>
@@ -57,21 +62,34 @@ const AllTasks = () => {
         </View>
       </View>
       <View style={styles.content}>
-        {/* <Text style={{color: '#111'}}>todays todos</Text> */}
         <View>
-          <FlatList
-            data={todos}
-            renderItem={({item}) => (
-              <View>
-                <TodoItem
-                  items={item}
-                  date={item.todaysDate}
-                  color={'#BA68C8'}
-                />
-                <Divider style={{backgroundColor: '#E0E0E0'}} />
-              </View>
-            )}
-          />
+          {count === 0 ? (
+            <View style={styles.upcomingEvent}>
+              <Image
+                style={styles.upcomingEventImage}
+                source={require('../assets/upcoming.png')}></Image>
+              <Text style={{color: '#111', marginTop: 10}}>
+                No upcoming events
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={todos}
+              renderItem={({item}) => (
+                <View>
+                  <TodoItem
+                    items={item}
+                    title={item.value.title}
+                    key={item.key}
+                    date={item.value.createdDate}
+                    time={item.value.createdTime}
+                    color={'#BA68C8'}
+                  />
+                  <Divider style={{backgroundColor: '#E0E0E0'}} />
+                </View>
+              )}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -127,5 +145,19 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: Constants.PAGE_LAYOUT.paddingHorizontal,
+  },
+
+  upcomingEventImage: {
+    width: 100,
+    height: 100,
+    opacity: 0.5,
+  },
+
+  upcomingEvent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.6,
+    height: '100%',
   },
 });
