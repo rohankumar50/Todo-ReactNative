@@ -18,11 +18,7 @@ import TodoItem from '../components/TodoItem';
 import {Divider} from 'react-native-paper';
 import {todaysDay, date, currentTime} from '../components/CurrentTimeDate';
 
-const AllTasks = () => {
-  // const [todoValue, setTodoValue] = useState('');
-  // const dispatch = useDispatch();
-  // const data = useSelector(state => state);
-  // const todos = data.todos.todos;
+const AllTasks = ({navigation}) => {
   const [todos, setTodos] = useState([]);
   const [count, setCount] = useState(0);
 
@@ -83,7 +79,9 @@ const AllTasks = () => {
                     key={item.key}
                     date={item.value.createdDate}
                     time={item.value.createdTime}
+                    reminder={item.value.reminder}
                     color={'#BA68C8'}
+                    navigation={navigation}
                   />
                   <Divider style={{backgroundColor: '#E0E0E0'}} />
                 </View>

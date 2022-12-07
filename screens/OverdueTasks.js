@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
 import TodoItem from '../components/TodoItem';
 
-const OverdueTasks = () => {
+const OverdueTasks = ({navigation}) => {
   const ms = [
     'data1',
     'data1',

@@ -6,7 +6,17 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Menu} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 
-const TodoItem = ({items, key, title, date, time, color, handleChecked}) => {
+const TodoItem = ({
+  items,
+  key,
+  title,
+  date,
+  time,
+  reminder,
+  color,
+  handleChecked,
+  navigation,
+}) => {
   const [checked, setChecked] = useState(false);
 
   const completedTask = () => {
@@ -36,7 +46,13 @@ const TodoItem = ({items, key, title, date, time, color, handleChecked}) => {
           onPress={completedTask}
           textStyle={styles.todo}
         />
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('updateTodo', {
+              title: title,
+              desciption: items.value.description,
+            })
+          }>
           <Text
             style={{
               color: Constants.TEXT_COLOR.color,
@@ -47,6 +63,14 @@ const TodoItem = ({items, key, title, date, time, color, handleChecked}) => {
           </Text>
           <Text style={{color: '#9E9E9E', fontSize: 10}}>{time}</Text>
           <Text style={{color: '#9E9E9E', fontSize: 10}}>{date}</Text>
+          {reminder ? (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={styles.reminderDot}></View>
+              <Text style={{color: '#9E9E9E', fontSize: 10}}>{reminder}</Text>
+            </View>
+          ) : (
+            ''
+          )}
         </TouchableOpacity>
       </View>
       <Menu
@@ -100,5 +124,17 @@ const styles = StyleSheet.create({
   deleteIcon: {
     width: 20,
     height: 20,
+  },
+
+  reminderDot: {
+    width: 8,
+    height: 8,
+    backgroundColor: 'green',
+    borderRadius: 50,
+    marginRight: 3,
+    shadowRadius: 3,
+    shadowColor: '#BDBDBD',
+    shadowOffset: {width: -1, height: 1},
+    shadowOpacity: 0.2,
   },
 });

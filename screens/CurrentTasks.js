@@ -15,12 +15,15 @@ import TodoItem from '../components/TodoItem';
 import {Divider} from 'react-native-paper';
 import NullData from '../components/NullData';
 
-const CurrentTasks = () => {
+const CurrentTasks = ({navigation}) => {
   const [todos, setTodos] = useState([]);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const todos = database().ref('/Todos');
+    const todos = database()
+      .ref('/Todos')
+      .orderByChild('completed')
+      .equalTo(false);
 
     const onLoading = todos.on('value', snapshot => {
       setTodos([]);
@@ -57,28 +60,26 @@ const CurrentTasks = () => {
       </View>
       <View style={styles.content}>
         <View>
-          {todos.filter(todo => {
-            return !todo.value.completed;
-          }).length === 0 ? (
+          {count === 0 ? (
             <NullData />
           ) : (
             <FlatList
               data={todos}
-              renderItem={({item}) =>
-                item.value.completed === false ? (
-                  <View>
-                    <TodoItem
-                      items={item}
-                      title={item.value.title}
-                      key={item.key}
-                      date={item.value.createdDate}
-                      time={item.value.createdTime}
-                      color={'#29B6F6'}
-                    />
-                    <Divider style={{backgroundColor: '#E0E0E0'}} />
-                  </View>
-                ) : null
-              }
+              renderItem={({item}) => (
+                <View>
+                  <TodoItem
+                    items={item}
+                    title={item.value.title}
+                    key={item.key}
+                    date={item.value.createdDate}
+                    time={item.value.createdTime}
+                    reminder={item.value.reminder}
+                    color={'#BA68C8'}
+                    navigation={navigation}
+                  />
+                  <Divider style={{backgroundColor: '#E0E0E0'}} />
+                </View>
+              )}
             />
           )}
         </View>
@@ -137,5 +138,4 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: Constants.PAGE_LAYOUT.paddingHorizontal,
   },
- 
 });

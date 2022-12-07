@@ -13,10 +13,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Constants from '../components/Constants';
 import TodoItem from '../components/TodoItem';
 import {Divider} from 'react-native-paper';
-import { todaysDay,date } from '../components/CurrentTimeDate';
+import {todaysDay, date} from '../components/CurrentTimeDate';
+import UpcomingItem from '../components/UpcomingItem';
 
 const Catelog = ({navigation}) => {
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -26,7 +26,6 @@ const Catelog = ({navigation}) => {
             It's {todaysDay}
           </Text>
           <Text style={styles.date}>{date}</Text>
-
         </View>
 
         <TextInput
@@ -81,28 +80,9 @@ const Catelog = ({navigation}) => {
               <Text style={styles.cardText}>Create Your Todo</Text>
             </TouchableOpacity>
           </View>
-          <View>
+          <View style={{}}>
             <Text style={styles.shortText}>Upcoming Todo's</Text>
-
-            <View style={styles.upcomingEvent}>
-              <Image
-                style={styles.upcomingEventImage}
-                source={require('../assets/upcoming.png')}></Image>
-              <Text style={{color: '#111', marginTop: 10}}>
-                No upcoming events
-              </Text>
-            </View>
-            {/* <View>
-              <FlatList
-                data={ms}
-                renderItem={({item}) => (
-                  <View>
-                    <TodoItem items={item} color={'#BA68C8'} />
-                    <Divider style={{backgroundColor: '#E0E0E0'}} />
-                  </View>
-                )}
-              />
-            </View> */}
+            <UpcomingItem navigation={navigation} />
           </View>
         </View>
       </SafeAreaView>
@@ -122,14 +102,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   welcomeText: {
-    fontSize:16,
+    fontSize: 16,
     marginVertical: 5,
     color: Constants.TEXT_COLOR.color,
     fontWeight: '700',
   },
 
-  date:{
-    color:Constants.TEXT_COLOR.color
+  date: {
+    color: Constants.TEXT_COLOR.color,
   },
   searchBar: {
     backgroundColor: '#EEEEEE',

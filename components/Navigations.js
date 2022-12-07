@@ -9,6 +9,7 @@ import CurrentTasks from '../screens/CurrentTasks';
 import CompletedTasks from '../screens/CompletedTasks';
 import OverdueTasks from '../screens/OverdueTasks';
 import CreateTodos from '../screens/CreateTodos';
+import UpdateScreen from '../screens/UpdateScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,15 +22,20 @@ const Navigations = () => {
           component={Catelog}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
-          name="createTodo"
-          component={CreateTodos}
+          name="updateTodo"
+          component={UpdateScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
           name="allTasks"
           component={AllTasks}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="createTodo"
+          component={CreateTodos}
           options={{headerShown: false}}
         />
 

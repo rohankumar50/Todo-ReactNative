@@ -15,14 +15,17 @@ import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
 import TodoItem from '../components/TodoItem';
 import NullData from '../components/NullData';
 import database from '@react-native-firebase/database';
-import { Divider } from 'react-native-paper';
+import {Divider} from 'react-native-paper';
 
-const CompletedTasks = () => {
+const CompletedTasks = ({navigation}) => {
   const [todos, setTodos] = useState([]);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const todos = database().ref('/Todos');
+    const todos = database()
+      .ref('/Todos')
+      .orderByChild('completed')
+      .equalTo(true);
 
     const onLoading = todos.on('value', snapshot => {
       setTodos([]);
@@ -44,7 +47,7 @@ const CompletedTasks = () => {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View>
-            <Text style={styles.headerText}>Completed Todos</Text>
+            <Text style={styles.headerText}>Current Todos</Text>
             <CurrentDate />
           </View>
           <View style={styles.progress}>
@@ -57,15 +60,13 @@ const CompletedTasks = () => {
         </View>
       </View>
       <View style={styles.content}>
-        {todos.filter(todo => {
-          return todo.value.completed;
-        }).length === 0 ? (
-          <NullData />
-        ) : (
-          <FlatList
-            data={todos}
-            renderItem={({item}) =>
-              item.value.completed === true ? (
+        <View>
+          {count === 0 ? (
+            <NullData />
+          ) : (
+            <FlatList
+              data={todos}
+              renderItem={({item}) => (
                 <View>
                   <TodoItem
                     items={item}
@@ -73,14 +74,16 @@ const CompletedTasks = () => {
                     key={item.key}
                     date={item.value.createdDate}
                     time={item.value.createdTime}
-                    color={'#29B6F6'}
+                    reminder={item.value.reminder}
+                    color={'#BA68C8'}
+                    navigation={navigation}
                   />
                   <Divider style={{backgroundColor: '#E0E0E0'}} />
                 </View>
-              ) : null
-            }
-          />
-        )}
+              )}
+            />
+          )}
+        </View>
       </View>
     </View>
   );
@@ -91,7 +94,7 @@ export default CompletedTasks;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#81C784',
+    backgroundColor: '#BA68C8',
   },
 
   header: {
@@ -135,18 +138,5 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: Constants.PAGE_LAYOUT.paddingHorizontal,
-  },
-  upcomingEventImage: {
-    width: 100,
-    height: 100,
-    opacity: 0.5,
-  },
-
-  upcomingEvent: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.6,
-    height: '100%',
   },
 });

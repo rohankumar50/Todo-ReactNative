@@ -17,57 +17,11 @@ import {todaysDay, date} from '../components/CurrentTimeDate';
 import {TextInput} from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
 
-const CreateTodos = ({navigation}) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const createdDate = todaysDay + ', ' + date;
-
-  const [reminder, setReminder] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [reminderText, setReminderText] = useState(false);
-  const [isReminder, setIsReminder] = useState(false);
-  const setDatePicker = date => {
-    setReminder(date);
-    setReminderText(true);
-    setIsReminder(true);
-  };
-
-  const cancelDatePicker = () => {
-    setReminder(new Date());
-    setOpen(false);
-    setReminderText(false);
-    setIsReminder(false);
-  };
-
-  const createMyTodo = () => {
-    const d = new Date();
-    const createdTime = d.toLocaleTimeString();
-
-    if (title.trim().length !== 0) {
-      database()
-        .ref('Todos/')
-        .push({
-          title,
-          description,
-          createdDate,
-          createdTime,
-          completed: false,
-          reminder: reminderText === true ? reminder.toLocaleString() : false,
-          isReminder,
-        })
-        .then(data => {
-          setTitle('');
-          setDescription('');
-          navigation.navigate('catelog');
-        })
-        .catch(error => {
-          console.log('error ', error);
-        });
-    } else {
-      alert('Kindly provide title of todo');
-    }
-  };
-
+const UpdateScreen = ({route, navigation}) => {
+  const {title, description} = route.params;
+  // const [title, setTitle] = useState('');
+  // const [description, setDescription] = useState('');
+  const createMyTodo = () => {};
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -78,13 +32,13 @@ const CreateTodos = ({navigation}) => {
           />
         </View>
         <View style={styles.headerContent}>
-          <Text style={styles.headerText}>Create Your Todo</Text>
+          <Text style={styles.headerText}>Update Your Todo</Text>
           <Text style={styles.day}>{todaysDay}</Text>
           <Text style={styles.date}>{date}</Text>
         </View>
       </View>
       <View style={styles.content}>
-        <DatePicker
+        {/* <DatePicker
           modal
           open={open}
           date={reminder}
@@ -108,7 +62,7 @@ const CreateTodos = ({navigation}) => {
           ) : (
             <Text style={styles.reminderText}>Set Reminder</Text>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TextInput
           placeholder="Title"
           placeholderTextColor="#BDBDBD"
@@ -126,14 +80,14 @@ const CreateTodos = ({navigation}) => {
         />
 
         <TouchableOpacity style={styles.createButton} onPress={createMyTodo}>
-          <Text style={styles.cardText}>Create Your Todo</Text>
+          <Text style={styles.cardText}>Update Your Todo</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default CreateTodos;
+export default UpdateScreen;
 
 const styles = StyleSheet.create({
   reminderContainer: {
@@ -148,7 +102,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: '#F50057',
+    backgroundColor: '#6200EA',
   },
 
   header: {
@@ -220,7 +174,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#F50057',
+    backgroundColor: '#6200EA',
   },
   cardText: {
     fontSize: 13,
