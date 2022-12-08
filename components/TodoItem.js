@@ -1,9 +1,9 @@
-import { Button, Image, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import Constants from './Constants';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Menu } from 'react-native-paper';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Menu} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 
 const TodoItem = ({
@@ -50,7 +50,8 @@ const TodoItem = ({
             navigation.navigate('updateTodo', {
               title: title,
               description: items.value.description,
-              keys: items.keys
+              keys: items.keys,
+              reminder: items.value.reminder,
             })
           }>
           <Text
@@ -61,12 +62,12 @@ const TodoItem = ({
             }}>
             {title}
           </Text>
-          <Text style={{ color: '#9E9E9E', fontSize: 10 }}>{time}</Text>
-          <Text style={{ color: '#9E9E9E', fontSize: 10 }}>{date}</Text>
+          <Text style={{color: '#9E9E9E', fontSize: 10}}>{time}</Text>
+          <Text style={{color: '#9E9E9E', fontSize: 10}}>{date}</Text>
           {reminder ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={styles.reminderDot}></View>
-              <Text style={{ color: '#9E9E9E', fontSize: 10 }}>{reminder}</Text>
+              <Text style={{color: '#9E9E9E', fontSize: 10}}>{reminder}</Text>
             </View>
           ) : (
             ''
@@ -79,14 +80,14 @@ const TodoItem = ({
         anchor={
           <TouchableOpacity
             onPress={openMenu}
-            style={{ width: 20, alignItems: 'center' }}>
+            style={{width: 20, alignItems: 'center'}}>
             <Image
-              style={{ width: 10, height: 20 }}
+              style={{width: 10, height: 20}}
               source={require('../assets/dots.png')}
             />
           </TouchableOpacity>
         }>
-        <Menu.Item onPress={() => { }} title="Edit" />
+        <Menu.Item onPress={() => {}} title="Edit" />
         <Menu.Item onPress={() => deleteTodo()} title="Delete" />
       </Menu>
     </View>
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     shadowRadius: 3,
     shadowColor: '#BDBDBD',
-    shadowOffset: { width: -1, height: 1 },
+    shadowOffset: {width: -1, height: 1},
     shadowOpacity: 0.2,
   },
 
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     marginRight: 3,
     shadowRadius: 3,
     shadowColor: '#BDBDBD',
-    shadowOffset: { width: -1, height: 1 },
+    shadowOffset: {width: -1, height: 1},
     shadowOpacity: 0.2,
   },
 });

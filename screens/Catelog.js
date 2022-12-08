@@ -15,6 +15,7 @@ import TodoItem from '../components/TodoItem';
 import {Divider} from 'react-native-paper';
 import {todaysDay, date} from '../components/CurrentTimeDate';
 import UpcomingItem from '../components/UpcomingItem';
+import Seachbar from '../components/Seachbar';
 
 const Catelog = ({navigation}) => {
   return (
@@ -28,11 +29,8 @@ const Catelog = ({navigation}) => {
           <Text style={styles.date}>{date}</Text>
         </View>
 
-        <TextInput
-          placeholder="Search Your Todos"
-          placeholderTextColor="#BDBDBD"
-          style={styles.searchBar}
-        />
+        <Seachbar navigation={navigation} />
+
         <View style={styles.content}>
           <View>
             <Text style={styles.heading}>My Todo's</Text>
@@ -110,18 +108,6 @@ const styles = StyleSheet.create({
 
   date: {
     color: Constants.TEXT_COLOR.color,
-  },
-  searchBar: {
-    backgroundColor: '#EEEEEE',
-    color: '#111',
-    fontWeight: '500',
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 25,
-    shadowRadius: 3,
-    shadowColor: '#BDBDBD',
-    shadowOffset: {width: -1, height: 1},
-    shadowOpacity: 0.2,
   },
 
   content: {

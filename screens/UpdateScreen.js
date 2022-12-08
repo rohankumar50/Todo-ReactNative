@@ -11,32 +11,32 @@ import {
   View,
 } from 'react-native';
 import database from '@react-native-firebase/database';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Constants from '../components/Constants';
-import { todaysDay, date } from '../components/CurrentTimeDate';
-import { TextInput } from 'react-native-gesture-handler';
+import {todaysDay, date} from '../components/CurrentTimeDate';
+import {TextInput} from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const UpdateScreen = ({ route, navigation }) => {
-  const { title, description, keys } = route.params;
+const UpdateScreen = ({route, navigation}) => {
+  const {title, description, keys, reminder} = route.params;
 
   const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedDescription, setUpdatedDescription] = useState(description);
 
-
-  const [reminder, setReminder] = useState(new Date());
+  const [newReminder, setNewReminder] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [reminderText, setReminderText] = useState(false);
+  const [reminderText, setReminderText] = useState(reminder);
   const [isReminder, setIsReminder] = useState(false);
 
   const setDatePicker = date => {
-    setReminder(date);
+    setNewReminder(date);
     setReminderText(true);
     setIsReminder(true);
   };
 
   const cancelDatePicker = () => {
-    setReminder(new Date());
+    setNewReminder(new Date());
     setOpen(false);
     setReminderText(false);
     setIsReminder(false);
@@ -44,13 +44,27 @@ const UpdateScreen = ({ route, navigation }) => {
 
   const updateTodo = () => {
     const todoRef = database().ref('/Todos').child(keys);
-    todoRef.update({
-      title: updatedTitle,
-      description: updatedDescription,
-      reminder: isReminder == true ? reminder.toLocaleString : false
-    }).then(() => alert("todo updated"));
+    todoRef
+      .update({
+        title: updatedTitle,
+        description: updatedDescription,
+        reminder: isReminder == true ? newReminder.toLocaleString() : false,
+        isReminder,
+      })
+      .then(() =>
+        Alert.alert('Todo', 'You updated your todo', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Ok',
+            onPress: () => navigation.navigate('catelog'),
+          },
+        ]),
+      );
   };
-
 
   return (
     <View style={styles.container}>
@@ -62,7 +76,7 @@ const UpdateScreen = ({ route, navigation }) => {
           />
         </View>
         <View style={styles.headerContent}>
-          <Text style={styles.headerText}>Update Your Todo</Text>
+          <Text style={styles.headerText}>Your Todo</Text>
           <Text style={styles.day}>{todaysDay}</Text>
           <Text style={styles.date}>{date}</Text>
         </View>
@@ -71,24 +85,36 @@ const UpdateScreen = ({ route, navigation }) => {
         <DatePicker
           modal
           open={open}
-          date={reminder}
+          date={newReminder}
           androidVariant={'nativeAndroid'}
           fadeToColor={'red'}
           onConfirm={date => {
-            setOpen(false);
             setDatePicker(date);
+            setOpen(false);
           }}
           onCancel={cancelDatePicker}
         />
         <TouchableOpacity
           style={styles.reminderContainer}
           onPress={() => setOpen(true)}>
-          <Image
+          {/* <Image
             source={require('../assets/bell.png')}
-            style={{ width: 20, height: 20 }}
+            style={{width: 20, height: 20}}
+          /> */}
+          <MaterialIcons
+            name="alarm"
+            style={{
+              color: '#111',
+              fontSize: 28,
+              color: '#6200EA',
+              alignSelf: 'center',
+              padding: 5,
+            }}
           />
           {reminderText ? (
-            <Text style={styles.reminderText}>{reminder.toLocaleString()}</Text>
+            <Text style={styles.reminderText}>
+              {newReminder.toLocaleString()}
+            </Text>
           ) : (
             <Text style={styles.reminderText}>Set Reminder</Text>
           )}
@@ -97,8 +123,8 @@ const UpdateScreen = ({ route, navigation }) => {
           placeholder="Title"
           placeholderTextColor="#BDBDBD"
           style={styles.title}
-          value={title}
-          onChangeText={data => setTitle(data)}
+          value={updatedTitle}
+          onChangeText={data => setUpdatedTitle(data)}
         />
         <TextInput
           placeholder="Want to write something about that"
@@ -106,11 +132,11 @@ const UpdateScreen = ({ route, navigation }) => {
           multiline={true}
           style={styles.description}
           value={updatedDescription}
-          onChangeText={(data) => setUpdatedDescription(data)}
+          onChangeText={data => setUpdatedDescription(data)}
         />
 
         <TouchableOpacity style={styles.createButton} onPress={updateTodo}>
-          <Text style={styles.cardText}>Update Your Todo</Text>
+          <Text style={styles.cardText}>Save</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -151,6 +177,7 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
+    marginTop: 12,
     color: '#fff',
     fontSize: 40,
     fontWeight: 'bold',
@@ -161,7 +188,7 @@ const styles = StyleSheet.create({
     width: 140,
   },
   day: {
-    fontSize: 42,
+    fontSize: 32,
     color: '#fff',
   },
   date: {
