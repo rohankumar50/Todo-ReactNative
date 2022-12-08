@@ -11,13 +11,13 @@ import {
   View,
 } from 'react-native';
 import database from '@react-native-firebase/database';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Constants from '../components/Constants';
-import {todaysDay, date} from '../components/CurrentTimeDate';
-import {TextInput} from 'react-native-gesture-handler';
+import { todaysDay, date } from '../components/CurrentTimeDate';
+import { TextInput } from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
 
-const CreateTodos = ({navigation}) => {
+const CreateTodos = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const createdDate = todaysDay + ', ' + date;
@@ -26,6 +26,7 @@ const CreateTodos = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [reminderText, setReminderText] = useState(false);
   const [isReminder, setIsReminder] = useState(false);
+  
   const setDatePicker = date => {
     setReminder(date);
     setReminderText(true);
@@ -101,7 +102,7 @@ const CreateTodos = ({navigation}) => {
           onPress={() => setOpen(true)}>
           <Image
             source={require('../assets/bell.png')}
-            style={{width: 20, height: 20}}
+            style={{ width: 20, height: 20 }}
           />
           {reminderText ? (
             <Text style={styles.reminderText}>{reminder.toLocaleString()}</Text>
@@ -124,7 +125,6 @@ const CreateTodos = ({navigation}) => {
           value={description}
           onChangeText={data => setDescription(data)}
         />
-
         <TouchableOpacity style={styles.createButton} onPress={createMyTodo}>
           <Text style={styles.cardText}>Create Your Todo</Text>
         </TouchableOpacity>

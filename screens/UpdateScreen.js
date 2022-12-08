@@ -11,23 +11,53 @@ import {
   View,
 } from 'react-native';
 import database from '@react-native-firebase/database';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Constants from '../components/Constants';
-import {todaysDay, date} from '../components/CurrentTimeDate';
-import {TextInput} from 'react-native-gesture-handler';
+import { todaysDay, date } from '../components/CurrentTimeDate';
+import { TextInput } from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
 
-const UpdateScreen = ({route, navigation}) => {
-  const {title, description} = route.params;
-  // const [title, setTitle] = useState('');
-  // const [description, setDescription] = useState('');
-  const createMyTodo = () => {};
+const UpdateScreen = ({ route, navigation }) => {
+  const { title, description, keys } = route.params;
+
+  const [updatedTitle, setUpdatedTitle] = useState(title);
+  const [updatedDescription, setUpdatedDescription] = useState(description);
+
+
+  const [reminder, setReminder] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [reminderText, setReminderText] = useState(false);
+  const [isReminder, setIsReminder] = useState(false);
+
+  const setDatePicker = date => {
+    setReminder(date);
+    setReminderText(true);
+    setIsReminder(true);
+  };
+
+  const cancelDatePicker = () => {
+    setReminder(new Date());
+    setOpen(false);
+    setReminderText(false);
+    setIsReminder(false);
+  };
+
+  const updateTodo = () => {
+    const todoRef = database().ref('/Todos').child(keys);
+    todoRef.update({
+      title: updatedTitle,
+      description: updatedDescription,
+      reminder: isReminder == true ? reminder.toLocaleString : false
+    }).then(() => alert("todo updated"));
+  };
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerContentImage}>
           <Image
-            source={require('../assets/human_CreateTodo.png')}
+            source={require('../assets/human_updatePage.png')}
             style={styles.icon}
           />
         </View>
@@ -38,7 +68,7 @@ const UpdateScreen = ({route, navigation}) => {
         </View>
       </View>
       <View style={styles.content}>
-        {/* <DatePicker
+        <DatePicker
           modal
           open={open}
           date={reminder}
@@ -55,14 +85,14 @@ const UpdateScreen = ({route, navigation}) => {
           onPress={() => setOpen(true)}>
           <Image
             source={require('../assets/bell.png')}
-            style={{width: 20, height: 20}}
+            style={{ width: 20, height: 20 }}
           />
           {reminderText ? (
             <Text style={styles.reminderText}>{reminder.toLocaleString()}</Text>
           ) : (
             <Text style={styles.reminderText}>Set Reminder</Text>
           )}
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TextInput
           placeholder="Title"
           placeholderTextColor="#BDBDBD"
@@ -75,11 +105,11 @@ const UpdateScreen = ({route, navigation}) => {
           placeholderTextColor="#BDBDBD"
           multiline={true}
           style={styles.description}
-          value={description}
-          onChangeText={data => setDescription(data)}
+          value={updatedDescription}
+          onChangeText={(data) => setUpdatedDescription(data)}
         />
 
-        <TouchableOpacity style={styles.createButton} onPress={createMyTodo}>
+        <TouchableOpacity style={styles.createButton} onPress={updateTodo}>
           <Text style={styles.cardText}>Update Your Todo</Text>
         </TouchableOpacity>
       </View>
@@ -127,8 +157,8 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    height: 150,
-    width: 100,
+    height: 130,
+    width: 140,
   },
   day: {
     fontSize: 42,
