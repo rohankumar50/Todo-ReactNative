@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import database from '@react-native-firebase/database';
 import Constants from '../components/Constants';
 import ProgressBar from '../components/ProgressBar';
 import CurrentDate from '../components/CurrentDate';
-import {useDispatch, useSelector} from 'react-redux';
-import {AddTodo, RemoveTodo} from '../redux/actions/todoActions/TodoActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddTodo, RemoveTodo } from '../redux/actions/todoActions/TodoActions';
 import TodoItem from '../components/TodoItem';
-import {Divider} from 'react-native-paper';
-import {todaysDay, date, currentTime} from '../components/CurrentTimeDate';
-const OverdueTasks = ({navigation}) => {
+import { Divider } from 'react-native-paper';
+import { todaysDay, date, currentTime } from '../components/CurrentTimeDate';
+const OverdueTasks = ({ navigation }) => {
   const [todos, setTodos] = useState([]);
   const [count, setCount] = useState(0);
   const [todayDateAndTime, setTodaysDateAndTime] = useState(
@@ -30,8 +30,8 @@ const OverdueTasks = ({navigation}) => {
       setCount(snapshot.numChildren());
       snapshot.forEach(function (childSnapshot) {
         const value = childSnapshot.val();
-        const key = {keys: childSnapshot.key};
-        const data = {...key, value};
+        const key = { keys: childSnapshot.key };
+        const data = { ...key, value };
         setTodos(todos => [...todos, data]);
       });
     });
@@ -42,15 +42,9 @@ const OverdueTasks = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    // const currentDate = new Date();
-    // setTodaysDateAndTime(currentDate.toLocaleString());
-    // console.log(Date.parse('12/13/2022, 10:39:00 PM'));
-    // console.log(
-    //   Date.parse(todayDateAndTime) > Date.parse('12/13/2022, 10:39:00 PM'),
-    // );
-    var date1 = new Date('12/13/2022, 10:39:00 PM');
-    var date2 = new Date('12/12/2022, 10:39:00 PM');
-    console.log(date1.getTime() > date2.getTime());
+    // var date1 = new Date('12/13/2022, 10:39:00 PM');
+    // var date2 = new Date('12/12/2022, 10:39:00 PM');
+    // console.log(date1.getTime() > date2.getTime());
   }, [todayDateAndTime]);
 
   return (
@@ -77,18 +71,19 @@ const OverdueTasks = ({navigation}) => {
               <Image
                 style={styles.upcomingEventImage}
                 source={require('../assets/upcoming.png')}></Image>
-              <Text style={{color: '#111', marginTop: 10}}>
+              <Text style={{ color: '#111', marginTop: 10 }}>
                 No upcoming events
               </Text>
             </View>
           ) : (
             <FlatList
               data={todos.filter(data => {
-                var date1 = todayDateAndTime;
-                var date2 = data.value.reminder;
-                return date1.getTime() > date2.getTime();
+                count++
+                setCount(count)
+                return data.value.completed === false && data.value.isReminder === true && (Date.parse(todayDateAndTime) > Date.parse(data.value.reminder)); // prints true (correct)
               })}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
+
                 <View>
                   <TodoItem
                     items={item}
@@ -101,7 +96,7 @@ const OverdueTasks = ({navigation}) => {
                     color={'#EC407A'}
                     navigation={navigation}
                   />
-                  <Divider style={{backgroundColor: '#E0E0E0'}} />
+                  <Divider style={{ backgroundColor: '#E0E0E0' }} />
                 </View>
               )}
             />
