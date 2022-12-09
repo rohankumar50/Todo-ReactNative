@@ -1,4 +1,12 @@
-import {FlatList, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Animated,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useState} from 'react';
@@ -116,6 +124,7 @@ const Seachbar = ({navigation}) => {
               </View>
             )}
           />
+          
         </View>
       ) : null}
     </View>

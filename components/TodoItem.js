@@ -62,12 +62,18 @@ const TodoItem = ({
             }}>
             {title}
           </Text>
-          <Text style={{color: '#9E9E9E', fontSize: 10}}>{time}</Text>
-          <Text style={{color: '#9E9E9E', fontSize: 10}}>{date}</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.createdDot}></View>
+            <Text style={{color: '#9E9E9E', fontSize: 10}}>
+              {'Created: ' + time}
+            </Text>
+          </View>
           {reminder ? (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={styles.reminderDot}></View>
-              <Text style={{color: '#9E9E9E', fontSize: 10}}>{reminder}</Text>
+              <Text style={{color: '#9E9E9E', fontSize: 10}}>
+                {'Reminder: ' + reminder}
+              </Text>
             </View>
           ) : (
             ''
@@ -128,6 +134,17 @@ const styles = StyleSheet.create({
   },
 
   reminderDot: {
+    width: 8,
+    height: 8,
+    backgroundColor: '#FF8F00',
+    borderRadius: 50,
+    marginRight: 3,
+    shadowRadius: 3,
+    shadowColor: '#BDBDBD',
+    shadowOffset: {width: -1, height: 1},
+    shadowOpacity: 0.2,
+  },
+  createdDot: {
     width: 8,
     height: 8,
     backgroundColor: 'green',

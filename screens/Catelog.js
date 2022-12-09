@@ -9,23 +9,83 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import database from '@react-native-firebase/database';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Constants from '../components/Constants';
 import TodoItem from '../components/TodoItem';
-import {Divider} from 'react-native-paper';
+import {Button, Divider} from 'react-native-paper';
 import {todaysDay, date} from '../components/CurrentTimeDate';
 import UpcomingItem from '../components/UpcomingItem';
 import Seachbar from '../components/Seachbar';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 const Catelog = ({navigation}) => {
+  const [image, setImage] = useState('');
+  const [myImage, setMyImage] = useState([]);
+  const pickImage = () => {
+    ImageCropPicker.openPicker({
+      width: 500,
+      height: 500,
+      cropping: true,
+    }).then(image => {
+      setImage({
+        uri: image.path,
+        width: image.width,
+        height: image.height,
+        mime: image.mime,
+      });
+      database().ref('Todos/profile').update({
+        profilePicure: image,
+      });
+    });
+  };
+
+  useEffect(() => {
+    database()
+      .ref('Todos/profile')
+      .once('value')
+      .then(snapshot => {
+        // console.log('images', snapshot.val());
+        setMyImage('images', snapshot.val());
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <View style={styles.welcomeTextContainer}>
           <Text style={styles.welcomeText}>Hi there !</Text>
-          <Text style={{...styles.welcomeText, fontSize: 32}}>
-            It's {todaysDay}
-          </Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={{...styles.welcomeText, fontSize: 32}}>
+              It's {todaysDay}
+            </Text>
+            <TouchableOpacity
+              onPress={pickImage}
+              style={{
+                width: 50,
+                height: 50,
+                alignSelf: 'center',
+                borderRadius: 1000,
+                borderWidth: 3,
+                borderColor: '#D81B60',
+                shadowColor: 'black',
+                shadowOpacity: 0.26,
+                shadowOffset: {width: 0, height: 2},
+                shadowRadius: 10,
+                backgroundColor: 'white',
+                elevation: 5,
+              }}>
+              <Image
+                source={image}
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 1000,
+                  resizeMode: 'contain',
+                }}></Image>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.date}>{date}</Text>
         </View>
 

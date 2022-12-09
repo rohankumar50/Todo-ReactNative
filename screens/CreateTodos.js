@@ -11,13 +11,14 @@ import {
   View,
 } from 'react-native';
 import database from '@react-native-firebase/database';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Constants from '../components/Constants';
-import { todaysDay, date } from '../components/CurrentTimeDate';
-import { TextInput } from 'react-native-gesture-handler';
+import {todaysDay, date} from '../components/CurrentTimeDate';
+import {TextInput} from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
 
-const CreateTodos = ({ navigation }) => {
+const CreateTodos = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const createdDate = todaysDay + ', ' + date;
@@ -26,7 +27,7 @@ const CreateTodos = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [reminderText, setReminderText] = useState(false);
   const [isReminder, setIsReminder] = useState(false);
-  
+
   const setDatePicker = date => {
     setReminder(date);
     setReminderText(true);
@@ -41,9 +42,6 @@ const CreateTodos = ({ navigation }) => {
   };
 
   const createMyTodo = () => {
-    const d = new Date();
-    const createdTime = d.toLocaleTimeString();
-
     if (title.trim().length !== 0) {
       database()
         .ref('Todos/')
@@ -51,9 +49,12 @@ const CreateTodos = ({ navigation }) => {
           title,
           description,
           createdDate,
-          createdTime,
+          createdTime: moment(new Date()).format('YYYY-MM-DD hh:mm:ss a'),
           completed: false,
-          reminder: reminderText === true ? reminder.toLocaleString() : false,
+          reminder:
+            reminderText === true
+              ? moment(reminder).format('YYYY-MM-DD hh:mm:ss a')
+              : false,
           isReminder,
         })
         .then(data => {
@@ -102,7 +103,7 @@ const CreateTodos = ({ navigation }) => {
           onPress={() => setOpen(true)}>
           <Image
             source={require('../assets/bell.png')}
-            style={{ width: 20, height: 20 }}
+            style={{width: 20, height: 20}}
           />
           {reminderText ? (
             <Text style={styles.reminderText}>{reminder.toLocaleString()}</Text>

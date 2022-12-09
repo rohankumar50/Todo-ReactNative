@@ -16,11 +16,14 @@ import TodoItem from '../components/TodoItem';
 import NullData from '../components/NullData';
 import database from '@react-native-firebase/database';
 import {Divider} from 'react-native-paper';
+import moment from 'moment';
 
 const UpcomingItem = ({navigation}) => {
   const [todos, setTodos] = useState([]);
   const [count, setCount] = useState(0);
-
+  const [todayDateAndTime, setTodaysDateAndTime] = useState(
+    moment(new Date()).format('YYYY-MM-DD hh:mm:ss a'),
+  );
   useEffect(() => {
     const todos = database()
       .ref('/Todos')
@@ -52,7 +55,12 @@ const UpcomingItem = ({navigation}) => {
         </View>
       ) : (
         <FlatList
-          data={todos}
+        data={todos.filter(data => {
+          return (
+            data.value.completed == false &&
+            todayDateAndTime < data.value.reminder
+          );
+        })}
           renderItem={({item}) => (
             <View>
               <TodoItem
