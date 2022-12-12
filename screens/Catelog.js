@@ -28,27 +28,31 @@ const Catelog = ({navigation}) => {
       height: 500,
       cropping: true,
     }).then(image => {
-      setImage({
+      setMyImage({
         uri: image.path,
         width: image.width,
         height: image.height,
         mime: image.mime,
       });
-      database().ref('Todos/profile').update({
-        profilePicure: image,
+      database().ref('/Profile').update({
+        uri: image.path,
+        width: image.width,
+        height: image.height,
+        mime: image.mime,
       });
     });
   };
 
   useEffect(() => {
     database()
-      .ref('Todos/profile')
+      .ref('/Profile')
       .once('value')
       .then(snapshot => {
-        // console.log('images', snapshot.val());
-        setMyImage('images', snapshot.val());
+        // console.log(snapshot.val());
+        // setMyImage([]);
+        setMyImage(snapshot.val());
       });
-  }, []);
+  }, [myImage]);
 
   return (
     <View style={styles.container}>
@@ -76,7 +80,7 @@ const Catelog = ({navigation}) => {
                 elevation: 5,
               }}>
               <Image
-                source={image}
+                source={myImage}
                 style={{
                   flex: 1,
                   width: '100%',
@@ -138,7 +142,7 @@ const Catelog = ({navigation}) => {
               <Text style={styles.cardText}>Create Your Todo</Text>
             </TouchableOpacity>
           </View>
-          <View style={{}}>
+          <View>
             <Text style={styles.shortText}>Upcoming Todo's</Text>
             <UpcomingItem navigation={navigation} />
           </View>
@@ -173,6 +177,8 @@ const styles = StyleSheet.create({
   content: {
     display: 'flex',
     marginTop: 30,
+    zIndex: -1,
+    top: 60,
   },
   heading: {
     fontSize: 20,

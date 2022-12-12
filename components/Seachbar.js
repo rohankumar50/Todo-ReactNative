@@ -124,7 +124,6 @@ const Seachbar = ({navigation}) => {
               </View>
             )}
           />
-          
         </View>
       ) : null}
     </View>
@@ -135,7 +134,7 @@ export default Seachbar;
 
 const styles = StyleSheet.create({
   searchBarContainer: {
-    // backgroundColor: '#EEEEEE',
+    backgroundColor: '#EEEEEE',
     color: '#111',
     fontWeight: '500',
     // padding: 10,
@@ -145,6 +144,9 @@ const styles = StyleSheet.create({
     shadowColor: '#BDBDBD',
     shadowOffset: {width: -1, height: 1},
     shadowOpacity: 0.2,
+    top: 105,
+    position: 'absolute',
+    width: '100%',
   },
   dropdownArea: {
     backgroundColor: '#EEEEEE',
@@ -153,6 +155,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignSelf: 'center',
+    // backgroundColor: 'red',
+    zIndex: 1000,
   },
 
   list: {

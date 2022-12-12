@@ -55,12 +55,12 @@ const UpcomingItem = ({navigation}) => {
         </View>
       ) : (
         <FlatList
-        data={todos.filter(data => {
-          return (
-            data.value.completed == false &&
-            todayDateAndTime < data.value.reminder
-          );
-        })}
+          data={todos.filter(data => {
+            return (
+              data.value.completed == false &&
+              todayDateAndTime < data.value.reminder
+            );
+          })}
           renderItem={({item}) => (
             <View>
               <TodoItem
